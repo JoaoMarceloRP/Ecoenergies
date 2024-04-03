@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Adicionar Publicação</h2>
+        <form id="publicacaoForm">
+            <input type="text" id="nomeEmpresa" placeholder="Nome da Empresa">
+            <input type="text" id="tipo" placeholder="Tipo de Energia">
+            <textarea id="descricao" placeholder="Descrição da Empresa"></textarea>
+            <input type="number" id="preco" placeholder="Preço">
+            <button type="submit">Adicionar Publicação</button>
+        </form>
+    </div>
+    
+<script>
+    fetch('/account-info', { credentials: 'include' })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Erro ao obter informações da conta');                }
+            })
+        .then(data => {
+            if (!data.isAdmin) {
+                window.location.href = '/home.html';
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao verificar informações da conta:', error);
+            });
+
+
+        document.getElementById('publicacaoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            var nome_empresa = document.getElementById('nomeEmpresa').value;
+            var tipo = document.getElementById('tipo').value;
+            var descricao = document.getElementById('descricao').value;
+            var preco = document.getElementById('preco').value;
+
+    
+            fetch('http://localhost:3000/publicacoes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nome_empresa, tipo, descricao, preco }),
+                credentials: 'include'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Publicação adicionada com sucesso');
+                    window.location.href = 'home.html';
+                } else {
+                    alert('Erro ao adicionar publicação');
+                }
+            })
+            .catch(error => console.error('Erro ao enviar requisição:', error));
+        });
+</script>
+    
+</body>
+</html>
