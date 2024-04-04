@@ -4,65 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
+    <style>
+        body, html {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+
+        .container {
+                max-width: 600px;
+                text-align: center;
+        }
+
+        input[type="text"],
+        textarea,
+        select,
+        input[type="number"]
+        {
+                width: 100%;
+                margin-bottom: 10px;
+                padding: 10px;
+                box-sizing: border-box;
+        }
+
+        .red-button {
+        color: white;
+        background-color: red;
+        border-radius: 10%;
+        }
+
+    </style>
 </head>
 <body>
     <div class="container">
         <h2>Adicionar Publicação</h2>
         <form id="publicacaoForm">
             <input type="text" id="nomeEmpresa" placeholder="Nome da Empresa">
-            <input type="text" id="tipo" placeholder="Tipo de Energia">
+            <select id="tipo">
+                <option value="">Selecionar tipo</option>
+                <option value="energia eólica">Energia Eólica</option>
+                <option value="energia solar">Energia Solar</option>
+                <option value="energia maremotriz">Energia Maremotriz</option>
+            </select>
+            <input type="text" id="localizacao" placeholder="Localização">
             <textarea id="descricao" placeholder="Descrição da Empresa"></textarea>
             <input type="number" id="preco" placeholder="Preço">
+            <button class="red-button" onclick="goBack()">Voltar</button>
             <button type="submit">Adicionar Publicação</button>
         </form>
     </div>
     
-<script>
-    fetch('/account-info', { credentials: 'include' })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Erro ao obter informações da conta');                }
-            })
-        .then(data => {
-            if (!data.isAdmin) {
-                window.location.href = '/home.html';
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao verificar informações da conta:', error);
-            });
-
-
+    <script>
         document.getElementById('publicacaoForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            
+    
             var nome_empresa = document.getElementById('nomeEmpresa').value;
             var tipo = document.getElementById('tipo').value;
+            var localizacao = document.getElementById('localizacao').value;
             var descricao = document.getElementById('descricao').value;
             var preco = document.getElementById('preco').value;
-
+    
+            var data = {
+                nome_empresa: nome_empresa,
+                tipo: tipo,
+                localizacao: localizacao,
+                descricao: descricao,
+                preco: preco
+            };
     
             fetch('http://localhost:3000/publicacoes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ nome_empresa, tipo, descricao, preco }),
+                body: JSON.stringify(data),
                 credentials: 'include'
             })
             .then(response => {
                 if (response.ok) {
                     alert('Publicação adicionada com sucesso');
-                    window.location.href = 'home.html';
+                    document.getElementById('nomeEmpresa').value = '';
+                    document.getElementById('tipo').value = '';
+                    document.getElementById('localizacao').value = '';
+                    document.getElementById('descricao').value = '';
+                    document.getElementById('preco').value = '';
+                    window.location.href = 'admin.html';
                 } else {
-                    alert('Erro ao adicionar publicação');
+                    return response.json();
+                }
+            })
+            .then(errorData => {
+                if (errorData) {
+                    alert('Erro ao adicionar publicação: ' + errorData.message);
                 }
             })
             .catch(error => console.error('Erro ao enviar requisição:', error));
         });
-</script>
+    
+        function goBack() {
+            window.location.href = 'home.html';
+        }
+    </script>
     
 </body>
 </html>

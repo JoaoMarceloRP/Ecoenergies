@@ -10,7 +10,7 @@
         margin: 0;
     }
 
-    .sidebar-left {
+    .sidebar-esquerda {
         position: fixed;
         left: 0;
         height: 100%;
@@ -20,7 +20,7 @@
         box-sizing: border-box;
     }
 
-    .sidebar-right {
+    .sidebar-direita {
         position: fixed;
         right: 0;
         height: 100%;
@@ -44,22 +44,33 @@
 </head>
 <body>
 
-    <div class="sidebar-left">
+    <div class="sidebar-esquerda">
         <h3>Barra Lateral</h3><br>
-        <p>Opções</p><br>
+        <p></p><br>
     </div>
     
-    <div class="sidebar-right">
+    <div class="sidebar-direita">
         <h3>Barra Lateral</h3><br>
         <div id="loginStatus"></div>
     </div>
     
     <div class="container">
         <div class="filter-container">
-            <button id="adminButton" style="display:none" onclick="goToAdminPage()">Admin</button>
-            <h2>Filtro por Preço</h2>
+            <button id="adminButton" style="display:none" onclick="adminPage()">Admin</button>
+            <h2>Filtros</h2>
+            <label for="tipoFilter">Tipo:</label>
+            <select id="tipoFilter">
+                <option value="">Selecionar tipo</option>
+                <option value="energia eólica">Energia Eólica</option>
+                <option value="energia solar">Energia Solar</option>
+                <option value="energia maremotriz">Energia Maremotriz</option>
+            </select>
+            <label for="localizacaoFilter">Localização:</label>
+            <input type="text" id="localizacaoFilter" placeholder="Ex: Salvador BA">
+            <label for="priceFilter">Preço máximo:</label>
             <input type="number" id="priceFilter" placeholder="Preço máximo">
-            <button onclick="applyPriceFilter()">Filtrar</button>
+            <button onclick="clearFilters()">Limpar</button>
+            <button onclick="Filters()">Filtrar</button>
         </div>
         <div id="publicacoesContainer">
             <h2>Publicações</h2>
@@ -118,12 +129,26 @@
             });
         }
 
-        function goToAdminPage() {
-        window.location.href = '/admin.html';
-    }
+        function adminPage() {
+            window.location.href = '/admin.html';
+        }
     
         function loadPublicacoes() {
-            fetch('http://localhost:3000/publicacoes', {
+            const tipo = document.getElementById('tipoFilter').value;
+            const localizacao = document.getElementById('localizacaoFilter').value;
+            const maxPrice = document.getElementById('priceFilter').value;
+
+            let url = 'http://localhost:3000/publicacoes';
+            
+            let queryParams = [];
+            if (tipo) queryParams.push(`tipo=${tipo}`);
+            if (localizacao) queryParams.push(`localizacao=${localizacao}`);
+            if (maxPrice) queryParams.push(`maxPrice=${maxPrice}`);
+            if (queryParams.length > 0) {
+                url += '?' + queryParams.join('&');
+            }
+
+            fetch(url, {
                 method: 'GET',
                 credentials: 'include'
             })
@@ -137,12 +162,14 @@
             .then(publicacoes => {
                 const publicacoesContainer = document.getElementById('publicacoesContainer');
                 publicacoesContainer.innerHTML = '';
+
                 publicacoes.forEach(publicacao => {
                     const publicacaoDiv = document.createElement('div');
                     publicacaoDiv.innerHTML = `
                         <h3>${publicacao.nome_empresa}</h3>
-                        <h3>${publicacao.tipo}</h3>
-                        <p>${publicacao.descricao}</p>
+                        <p>Tipo: ${publicacao.tipo}</p>
+                        <p>Localização: ${publicacao.localizacao}</p>
+                        <p>Descrição: ${publicacao.descricao}</p>
                         <p>Preço: R$ ${publicacao.preco}</p>
                     `;
                     publicacoesContainer.appendChild(publicacaoDiv);
@@ -150,11 +177,58 @@
             })
             .catch(error => console.error('Erro ao carregar publicações:', error));
         }
-    
-        function applyPriceFilter() {
-            const maxPrice = document.getElementById('priceFilter').value;
-            // fazer filtro de preço
+
+        function Filters() {
+        const tipo = document.getElementById('tipoFilter').value;
+        const localizacao = document.getElementById('localizacaoFilter').value;
+        const maxPrice = document.getElementById('priceFilter').value;
+
+        let url = 'http://localhost:3000/publicacoes';
+
+        let queryParams = [];
+        if (tipo) queryParams.push(`tipo=${tipo}`);
+        if (localizacao) queryParams.push(`localizacao=${localizacao}`);
+        if (maxPrice) queryParams.push(`maxPrice=${maxPrice}`);
+        if (queryParams.length > 0) {
+            url += '?' + queryParams.join('&');
         }
+
+        fetch(url, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Erro ao obter publicações');
+            }
+        })
+        .then(publicacoes => {
+            const publicacoesContainer = document.getElementById('publicacoesContainer');
+            publicacoesContainer.innerHTML = '';
+
+            publicacoes.forEach(publicacao => {
+                const publicacaoDiv = document.createElement('div');
+                publicacaoDiv.innerHTML = `
+                    <h3>${publicacao.nome_empresa}</h3>
+                    <p>Tipo: ${publicacao.tipo}</p>
+                    <p>Localização: ${publicacao.localizacao}</p>
+                    <p>Descrição: ${publicacao.descricao}</p>
+                    <p>Preço: R$ ${publicacao.preco}</p>
+                `;
+                publicacoesContainer.appendChild(publicacaoDiv);
+            });
+        })
+        .catch(error => console.error('Erro ao carregar publicações:', error));
+    }
+
+        function clearFilters() {
+        document.getElementById('tipoFilter').value = '';
+        document.getElementById('localizacaoFilter').value = '';
+        document.getElementById('priceFilter').value = '';
+        loadPublicacoes();
+    }
     
         window.addEventListener('load', () => {
             loadAccountInfo();

@@ -170,7 +170,29 @@ app.get('/account-info', requireAuth, (req, res) => {
 
 
 app.get('/publicacoes', (req, res) => {
-    connection.query('SELECT * FROM publicacoes', (error, results) => {
+    const tipo = req.query.tipo;
+    const localizacao = req.query.localizacao;
+    const maxPrice = req.query.maxPrice;
+
+    let query = 'SELECT * FROM publicacoes WHERE 1=1';
+    let params = [];
+
+    if (tipo) {
+        query += ' AND tipo = ?';
+        params.push(tipo);
+    }
+
+    if (localizacao) {
+        query += ' AND localizacao = ?';
+        params.push(localizacao);
+    }
+
+    if (maxPrice) {
+        query += ' AND preco <= ?';
+        params.push(maxPrice);
+    }
+
+    connection.query(query, params, (error, results) => {
         if (error) {
             console.error('Erro ao obter publicações:', error);
             res.status(500).json({ message: 'Erro interno do servidor' });
@@ -182,9 +204,16 @@ app.get('/publicacoes', (req, res) => {
 
 
 app.post('/publicacoes', (req, res) => {
-    const { nome_empresa, tipo, descricao, preco} = req.body;
-    connection.query('INSERT INTO publicacoes (nome_empresa, tipo, descricao, preco) VALUES (?, ?, ?, ?)',
-        [nome_empresa, tipo, descricao, preco],
+    const { nome_empresa, tipo, localizacao, descricao, preco } = req.body;
+
+    if (!nome_empresa || !tipo || !localizacao || !descricao || !preco) {
+        res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+        return;
+    }
+
+    connection.query(
+        'INSERT INTO publicacoes (nome_empresa, tipo, localizacao, descricao, preco) VALUES (?, ?, ?, ?, ?)',
+        [nome_empresa, tipo, localizacao, descricao, preco],
         (error, results) => {
             if (error) {
                 console.error('Erro ao criar uma nova publicação:', error);
@@ -192,7 +221,8 @@ app.post('/publicacoes', (req, res) => {
                 return;
             }
             res.status(201).json({ message: 'Publicação criada com sucesso' });
-        });
+        }
+    );
 });
 
 
