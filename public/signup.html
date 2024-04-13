@@ -4,27 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Criar Conta</title>
-<style>
-    .red-button {
-        color: white;
-        background-color: red;
-        border-radius: 10%;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="css/signup.css"/>
 </head>
 <body>
 
-<h2>Criar uma Conta</h2>
-<form id="signup-form">
-    <input type="text" id="username" placeholder="Nome de usuário">
-    <br>
-    <input type="password" id="password" placeholder="Senha">
-    <br>
-    <input type="email" id="email" placeholder="Email">
-    <br><br>
-    <button class="red-button" onclick="goBack()">Sair</button>
-    <button type="submit">Criar Conta</button>
-</form>
+<div class="container">
+    <h2>Criar uma Conta</h2>
+    <form id="signup-form">
+        <input type="text" id="username" placeholder="Nome de usuário">
+        <br>
+        <input type="password" id="password" placeholder="Senha">
+        <br>
+        <input type="email" id="email" placeholder="Email">
+        <br><br>
+        <button type="submit">Criar Conta</button>
+        <button class="red-button" onclick="goBack()">Sair</button>
+    </form>
+</div>
 
 <script>
     document.getElementById('signup-form').addEventListener('submit', function(event) {
