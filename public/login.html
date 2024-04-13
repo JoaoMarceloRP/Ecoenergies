@@ -4,26 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tela de Login</title>
-<style>
-    body, html {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .container {
-        border: 2px solid black;
-        padding: 20px;
-        border-radius: 5px;
-    }
-
-    .red-button {
-        color: white;
-        background-color: red;
-        border-radius: 10%;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="css/login.css"/>
 </head>
 <body>
 
@@ -37,8 +18,8 @@
         <br>
         <p>Não tem uma conta? <a href="signup.html">Criar uma conta</a></p>
         <br>
-        <button class="red-button" onclick="goBack()">Voltar</button>
         <button onclick="login()">Login</button>
+        <button class="red-button" onclick="voltar()">Voltar</button>
     </div>
 </div>
 
@@ -65,7 +46,7 @@
         .catch(error => console.error('Erro ao enviar requisição:', error));
     }
 
-    function goBack() {
+    function voltar() {
         window.location.href = 'home.html';
     }
 </script>
