@@ -1,4 +1,4 @@
-# Evepyeia (placeholder)
+# Ecoenergies (placeholder)
 
 ## Instalação
 1. baixa o mysql workbench e coloca o script do banco lá (não colocar senha ou mudar o nome do user my mysql)
