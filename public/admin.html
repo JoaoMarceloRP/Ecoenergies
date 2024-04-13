@@ -1,40 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Page</title>
-    <style>
-        body, html {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        }
-
-        .container {
-                max-width: 600px;
-                text-align: center;
-        }
-
-        input[type="text"],
-        textarea,
-        select,
-        input[type="number"]
-        {
-                width: 100%;
-                margin-bottom: 10px;
-                padding: 10px;
-                box-sizing: border-box;
-        }
-
-        .red-button {
-        color: white;
-        background-color: red;
-        border-radius: 10%;
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Page</title>
+<link rel="stylesheet" type="text/css" href="css/admin.css"/>
 </head>
 <body>
     <div class="container">
@@ -50,8 +20,8 @@
             <input type="text" id="localizacao" placeholder="Localização: Ex Salvador BA">
             <textarea id="descricao" placeholder="Descrição da Empresa"></textarea>
             <input type="number" id="preco" placeholder="Preço">
-            <button class="red-button" onclick="goBack()">Voltar</button>
             <button type="submit">Adicionar Publicação</button>
+            <button class="red-button" onclick="goBack()">Voltar</button>
         </form>
     </div>
     
