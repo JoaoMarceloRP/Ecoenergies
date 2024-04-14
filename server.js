@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'evepyeiadb'
+    database: 'ecoenergiesdb'
 });
 
 connection.connect((err) => {
@@ -145,7 +145,7 @@ app.post('/signup', (req, res) => {
 });
 
 
-app.get('/account-info', requireAuth, (req, res) => {
+app.get('/contaInfo', requireAuth, (req, res) => {
     const username = req.session.user;
 
     connection.query('SELECT * FROM usuarios WHERE nome = ?', [username], (error, results) => {
@@ -172,7 +172,7 @@ app.get('/account-info', requireAuth, (req, res) => {
 app.get('/publicacoes', (req, res) => {
     const tipo = req.query.tipo;
     const localizacao = req.query.localizacao;
-    const maxPrice = req.query.maxPrice;
+    const maxPreco = req.query.maxPreco;
 
     let query = 'SELECT * FROM publicacoes WHERE 1=1';
     let params = [];
@@ -187,9 +187,9 @@ app.get('/publicacoes', (req, res) => {
         params.push(localizacao);
     }
 
-    if (maxPrice) {
+    if (maxPreco) {
         query += ' AND preco <= ?';
-        params.push(maxPrice);
+        params.push(maxPreco);
     }
 
     connection.query(query, params, (error, results) => {
@@ -237,9 +237,6 @@ app.get('/logout', (req, res) => {
         res.redirect('/');
     });
 });
-
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
