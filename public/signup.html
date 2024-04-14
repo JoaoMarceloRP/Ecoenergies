@@ -18,40 +18,11 @@
         <input type="email" id="email" placeholder="Email">
         <br><br>
         <button type="submit">Criar Conta</button>
-        <button class="red-button" onclick="goBack()">Sair</button>
+        <button class="red-button" onclick="voltarLogin()">Sair</button>
     </form>
 </div>
 
-<script>
-    document.getElementById('signup-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
-        var email = document.getElementById('email').value;
-
-        fetch('http://localhost:3000/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password, email }),
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('Conta criada com sucesso');
-                window.location.href = 'login.html';
-            } else {
-                alert('Erro ao criar conta');
-            }
-        })
-        .catch(error => console.error('Erro ao enviar requisição:', error));
-    });
-
-    function goBack() {
-        window.location.href = 'login.html';
-    }
-</script>
+<script src="js/script.js"></script>
 
 </body>
 </html>
