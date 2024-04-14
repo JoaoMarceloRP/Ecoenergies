@@ -19,38 +19,11 @@
         <p>Não tem uma conta? <a href="signup.html">Criar uma conta</a></p>
         <br>
         <button onclick="login()">Login</button>
-        <button class="red-button" onclick="voltar()">Voltar</button>
+        <button class="red-button" onclick="voltarHome()">Voltar</button>
     </div>
 </div>
 
-<script>
-    function login() {
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('password').value;
-
-        fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-            credentials: 'include'
-        })
-        .then(response => {
-            if (response.ok) {
-                window.location.href = 'home.html';
-            } else {
-                alert('Credenciais inválidas');
-            }
-        })
-        .catch(error => console.error('Erro ao enviar requisição:', error));
-    }
-
-    function voltar() {
-        window.location.href = 'home.html';
-    }
-</script>
-
+<script src="js/script.js"></script>
 
 </body>
 </html>
