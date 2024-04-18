@@ -59,17 +59,13 @@ function requireAdmin(req, res, next) {
 
 
 app.get('/admin', requireAdmin, (req, res) => {
-    if (req.session.user.isAdmin) {
-        res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-    } else {
-        res.redirect('/');
-    }
+    res.send();
 });
 
 
 app.get('/', (req, res) => {
     if (req.session.user === adminUser) {
-        res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+        res.sendFile(path.join(__dirname, 'public', 'home.html'));
     } else {
         res.sendFile(path.join(__dirname, 'public', 'home.html'));
     }
