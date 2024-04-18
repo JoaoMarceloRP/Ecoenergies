@@ -7,9 +7,15 @@
 <link rel="stylesheet" type="text/css" href="css/home.css"/>
 </head>
 <body>
+
+    <div class="navbar">
+        <a class="active" href="../home.html">Home</a>
+        <a href="#">Contato</a>
+        <a href="#">Sobre</a>
+        <a class="admin-button" id="adminButton" style="display:none">Admin</a>
+    </div>
     
-    <div class="sidebar-esquerda">
-        <h3>Barra Lateral</h3><br>
+    <div class="sidebar-esquerda"><br>
         <p></p><br>
     </div>
     
@@ -20,7 +26,6 @@
     
     <div class="container">
         <div class="filtro-container">
-            <button id="adminButton" style="display:none" onclick="adminPage()">Admin</button>
             <h2>Filtros</h2>
             <label for="tipofiltro">Tipo:</label>
             <select id="tipofiltro">
@@ -40,8 +45,29 @@
             <h2>Publicações</h2>
         </div>
     </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2>Adicionar Publicação</h2>
+            <form id="publicacaoForm">
+                <input type="text" id="nomeEmpresa" placeholder="Nome da Empresa">
+                <select id="tipo">
+                    <option value="">Selecionar tipo</option>
+                    <option value="energia eólica">Energia Eólica</option>
+                    <option value="energia solar">Energia Solar</option>
+                    <option value="energia maremotriz">Energia Maremotriz</option>
+                </select>
+                <input type="text" id="localizacao" placeholder="Localização: Ex Salvador BA">
+                <textarea id="descricao" placeholder="Descrição da Empresa"></textarea>
+                <input type="number" id="preco" placeholder="Preço">
+                <button type="submit">Adicionar Publicação</button>
+            </form>
+        </div>
+    </div>
     
-    <script src="js/script.js"></script>
+    <script src="js/home.js"></script>
+    <script src="js/modal.js"></script>
     
 </body>
 </html>
