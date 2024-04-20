@@ -1,3 +1,4 @@
+
 function logout() {
     fetch('http://localhost:3000/logout', {
         method: 'GET',
@@ -82,11 +83,13 @@ function loadPublicacoes() {
         publicacoes.forEach(publicacao => {
             const publicacaoDiv = document.createElement('div');
             publicacaoDiv.innerHTML = `
+                <img src="img/${publicacao.id}.jpg" height="200px" width="200px">
                 <h3>${publicacao.nome_empresa}</h3>
                 <p>Tipo: ${publicacao.tipo}</p>
                 <p>Localização: ${publicacao.localizacao}</p>
                 <p>Descrição: ${publicacao.descricao}</p>
                 <p>Preço: R$ ${publicacao.preco}</p>
+                <a href="${publicacao.link}" target="_blank">Contato</a>
             `;
             publicacoesContainer.appendChild(publicacaoDiv);
         });
@@ -127,11 +130,13 @@ fetch(url, {
     publicacoes.forEach(publicacao => {
         const publicacaoDiv = document.createElement('div');
         publicacaoDiv.innerHTML = `
+            <img src="img/${publicacao.id}.jpg" height="200px" width="200px">
             <h3>${publicacao.nome_empresa}</h3>
             <p>Tipo: ${publicacao.tipo}</p>
             <p>Localização: ${publicacao.localizacao}</p>
             <p>Descrição: ${publicacao.descricao}</p>
             <p>Preço: R$ ${publicacao.preco}</p>
+            <a href="${publicacao.link}">Contato</a>
         `;
         publicacoesContainer.appendChild(publicacaoDiv);
     });
