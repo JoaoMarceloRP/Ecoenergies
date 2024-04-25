@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin:ital@0;1&family=Hind+Madurai:wght@300;400;500;600;700&family=Lexend:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:wdth@75..100&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #49796B;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Open Sans", sans-serif;
+}
+
+section{
+    width: 800px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 50px;
+}
+
+.imagem{
+   width: 800px;
+   height: 86px;
+   display: flex;
+   justify-content: center;
+}
+
+img{
+    width: 300px;
+    height: 86px;
+}
+
+.titulo p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.formulario{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 30px;
+}
+
+::placeholder{
+    font-size: 20px;
+    color: #DEDEDE;
+}
+
+.cnpj input{
+    width: 250px;
+    height: 30px;
+    border: none;
+    border-bottom: 2px solid #DEDEDE;
+    outline: 0;
+    margin-bottom: 20px;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.senha input{
+    width: 250px;
+    height: 30px;
+    border: none;
+    border-bottom: 2px solid #DEDEDE;
+    outline: 0;
+    margin-bottom: 15px;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.botoes{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+a{
+    text-decoration: none;
+    padding: 10px;
+    font-size: 17px;
+}
+
+.acessar{
+    height: 40px;
+    border: #49796B;
+    background-color: #49796B;
+    border-radius: 20px;
+    transition: box-shadow 0.3s;
+}
+
+.acessar a{
+    color: white;
+}
+
+.acessar:hover{
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.esqueceusenha{
+    height: 40px;
+    border: 2px solid #49796B;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #49796B;
+    transition: background-color 0.3s;
+}
+
+.esqueceusenha:hover{
+    background-color: #49796B;
+    color: white;
+}
+
+.cadastro{
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cadastro p{
+    font-size: 15px;
+}
+
+span{
+    color:#49796B;
+}
+
+span:hover{
+    text-decoration: underline;
+}
+
+.cadastro a{
+    padding: 0;
+}

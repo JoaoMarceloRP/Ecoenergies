@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adionar</title>
+    <link rel="stylesheet" href="css/adicionar.css">
+</head>
+<body>
+    <header>
+        <a href="home.html"><img src="img/logoheader.png" alt="folha com linhas que simulam um sistema de conexão"></a>
+
+    </header><br><br><br>
+    <section>
+        <h1>Adicionar Publicação</h1><br><br>
+        <input type="text" id="nome_publi" name="nome_publi" placeholder="Nome da Publicação"><br><br>
+
+        <select id="tipo" placeholder="Tipo de energia">
+        <option value="">Tipo de energia</option>
+        <option value="energia-eolica">Energia Eólica</option>
+        <option value="energia-solar">Energia Solar</option>
+        <option value="energia-maremotriz">Energia Maremotriz</option>
+        </select><br><br>
+
+        <input type="text" id="localizacao" name="localizacao" placeholder="Localização"><br><br>
+
+        <textarea id="descricao" name="descricao" rows="4" cols="50" placeholder="Descrição"></textarea><br><br>
+
+        <input type="text" id="preco" name="preco" placeholder="Preço"><br><br>
+
+        <input type="text" id="link" name="link" placeholder="Link"><br><br>
+
+        <div class="button-container">
+            <button id="submitBtn">Adicionar</button>
+            <button onclick="voltarHome()">Voltar</button>
+        </div>
+    </section>
+
+    <script src="js/addserv.js"></script>
+</body>
+</html>

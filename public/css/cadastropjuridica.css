@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin:ital@0;1&family=Hind+Madurai:wght@300;400;500;600;700&family=Lexend:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:wdth@75..100&display=swap');
+
+*{
+    font-family: "Open Sans", sans-serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    height: 100vh;
+}
+
+header{
+    width: 100%;
+    height: 90px;
+    background-color: #49796B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+section{
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+p{
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+span{
+    font-weight: 600;
+}
+
+form{
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+}
+
+input{
+    border: 1px solid #CED4DA;
+    width: 588px;
+    height: 40px;
+    padding-left: 40px;
+}
+
+::placeholder{
+    color: #DEE2E6;
+    font-size: 17px;
+}
+
+.email{
+    background-image: url("o-email.png");
+    background-repeat: no-repeat;
+    background-position: calc(15px);
+    background-size: 1.7em;
+    padding-left: 3.5em;
+}
+
+.cnpj{
+    background-image: url("perfil.png");
+    background-repeat: no-repeat;
+    background-position: calc(15px);
+    background-size: 1.7em;
+    padding-left: 3.5em;
+}
+
+.telefone{
+    background-image: url("telefone.png");
+    background-repeat: no-repeat;
+    background-position: calc(15px);
+    background-size: 1.7em;
+    padding-left: 3.5em;
+}
+
+.senha{
+    background-image: url("cadeado.png");
+    background-repeat: no-repeat;
+    background-position: calc(15px);
+    background-size: 1.7em;
+    padding-left: 3.5em;
+}
+
+.botaocadastro{
+    background-color: #49796B;
+    border: 1px solid #49796B;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: larger;
+    font-weight: 600;
+    color: white;
+    transition: box-shadow 0.3s;
+}
+
+.botaocadastro:hover{
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.loginmae{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.loginmae p{
+    font-size: medium;
+    margin: 0;
+}
+
+a{
+    border: 1px solid #49796B;
+    border-radius: 20px;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: medium;
+    font-weight: 600;
+    color: #49796B;
+}
+
+a:hover{
+    background-color: #49796B;
+    color: white;
+}

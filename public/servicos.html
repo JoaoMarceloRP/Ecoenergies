@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serviços</title>
+    <link rel="stylesheet" href="css/servicos.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="home.html"><img src="img/logoheader.png" alt="folha com linhas que simulam um sistema de conexão"></a>
+            <ul>
+                <li><a href="servicos.html" class="aumentar-fonteA">Serviços</a></li>
+                <li><a href="centraldeajuda.html" class="aumentar-fonteA">Fale conosco</a></li>
+                <div>
+                    <img id="aumentar-fonte-btn" src="css/fonte.png" alt="letra A maiúscula e minúscula" title="Aumentar a fonte">
+                </div>
+            </ul>
+        </nav>
+    </header>
+    
+
+    <section>
+        <div class="container">
+            <div class="filtro-container">
+                <h2 class="aumentar-fonteA">Filtros</h2>
+                <select id="tipofiltro" class="aumentar-fonteA">
+                    <option value="">Tipo de energia</option>
+                    <option value="energia-eolica">Energia Eólica</option>
+                    <option value="energia-solar">Energia Solar</option>
+                    <option value="energia-maremotriz">Energia Maremotriz</option>
+                </select>
+                <input type="text" id="localizacaofiltro" placeholder="Ex: Salvador BA">
+                <input id="precofiltro" placeholder="Preço máximo">
+                <button button onclick="limparFiltro()">Limpar</button>
+                <button button onclick="Filtro()">Filtrar</button><br>
+            </div>
+                <div id="publicacoesContainer">
+                </div>
+        </div>
+
+
+    </section>
+
+    <script src="js/servicos.js"></script>
+
+</body>
+</html>

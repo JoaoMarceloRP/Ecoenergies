@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="css/loginpjuridica.css">
+</head>
+<body>
+    <section>
+        <div class="imagem">
+            <a href="home.html"><img src="img/logoverde.png" alt="folha com linhas que simulam um sistema de conexão"></a>
+        </div>
+        <div class="titulo">
+            <p>Faça seu login</p>
+        </div>
+        <div class="formulario">
+            <form action="">
+                <div class="cnpj">
+                    <input type="cnpj" placeholder="CNPJ" id="cnpj">
+                </div>
+                <div class="senha">
+                    <input type="password" placeholder="Senha" id="senha">
+                </div>
+                <div class="botoes">
+                    <button class="acessar" onclick="login()"><a>Acessar</a></button>
+                    <a class="esqueceusenha" href="esqueceuasenha.html">Esqueceu sua senha?</a>
+                </div> 
+                <div class="cadastro">
+                    <p>Não possui uma conta?</p>
+                    <a href="signuppjuridica.html"><span>Cadastre-se</span></a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script src="js/pjuridicalogin.js"></script>
+
+</body>
+</html>
