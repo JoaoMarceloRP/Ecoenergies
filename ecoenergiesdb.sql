@@ -4,19 +4,29 @@ use ecoenergiesdb;
 
 create table if not exists usuarios (
     id int auto_increment primary key,
-    nome varchar(255) not null,
-    senha varchar(255) not null,
     email varchar(255) not null,
+    senha varchar(255) not null,
+    cep varchar(255) not null,
+    telefone varchar(255) not null,
     isAdmin BOOLEAN DEFAULT 0
 	);
 
-CREATE TABLE IF NOT EXISTS publicacoes (
+create table if not exists publicacoes (
     id int auto_increment primary key,
-    nome_empresa varchar(255) not null,
+    nome_publi varchar(255) not null,
     tipo varchar(255) not null,
     localizacao varchar(255) not null,
     descricao text not null,
-    preco decimal(10, 2)
+    preco decimal(10, 2),
+    link text (255) not null
+	);
+    
+create table if not exists empresas (
+    id int auto_increment primary key,
+    email varchar(255) not null,
+    cnpj varchar(255) not null,
+    telefone varchar(255) not null,
+    senha varchar(255) not null
 	);
 
-INSERT INTO usuarios (id, nome, senha, email, isAdmin) VALUES (1, 'admin', '1234', 'admin@gmail.com', true);
+INSERT INTO usuarios (id, email, senha, cep, telefone, isAdmin) VALUES (1, 'joaoMarcelo@gmail.com', '1234', '01001-000', '7111112222', true);
