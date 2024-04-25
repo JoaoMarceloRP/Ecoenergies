@@ -8,7 +8,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '',
+    senha: '',
     database: 'ecoenergiesdb'
 });
 
@@ -24,9 +24,10 @@ const app = express();
 const port = 3000;
 
 const adminUser = {
-    username: 'admin',
-    password: '1234',
-    email: 'admin@gmail.com',
+    email: 'admin@email',
+    senha: '1234',
+    cep: '123456',
+    telefone: '7111112222',
     isAdmin: true
 };
 
@@ -43,32 +44,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 function requireAuth(req, res, next) {
     if (req.session.user) {
+        if (req.session.isAdmin) {
+            req.session.userType = 'admin';
+        } else if (req.session.isEmpresa) {
+            req.session.userType = 'empresa';
+        } else {
+            req.session.userType = 'comum';
+        }
         next();
     } else {
         res.redirect('/');
     }
 }
 
-function requireAdmin(req, res, next) {
-    if (req.session.user && req.session.user.isAdmin === true) {
-        next();
-    } else {
-        res.status(403).json({ message: 'Acesso não autorizado' });
-    }
-}
-
-
-app.get('/admin', requireAdmin, (req, res) => {
-    res.send();
-});
-
-
 app.get('/', (req, res) => {
-    if (req.session.user === adminUser) {
         res.sendFile(path.join(__dirname, 'public', 'home.html'));
-    } else {
-        res.sendFile(path.join(__dirname, 'public', 'home.html'));
-    }
 });
 
 
@@ -85,17 +75,19 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
 
-    if (username === adminUser.username && password === adminUser.password) {
-        req.session.user = username;
-        console.log(`Login: ${username} (admin)`);
+app.post('/login', (req, res) => {
+    console.log('Recebendo requisição de login:', req.body);
+    const { email, senha } = req.body;
+
+    if (email === adminUser.email && senha === adminUser.senha) {
+        req.session.user = email;
+        console.log(`Login: ${email} (admin)`);
         res.status(200).json({ message: 'Login bem-sucedido' });
         return;
     }
 
-    connection.query('SELECT * FROM usuarios WHERE nome = ? AND senha = ?', [username, password], (error, results) => {
+    connection.query('SELECT * FROM usuarios WHERE email = ? AND senha = ?', [email, senha], (error, results) => {
         if (error) {
             console.error('Erro ao verificar as credenciais:', error);
             res.status(500).json({ message: 'Erro interno do servidor' });
@@ -103,9 +95,9 @@ app.post('/login', (req, res) => {
         }
 
         if (results.length === 1) {
-            req.session.user = username;
-            console.log(`Login: ${username}`);
-            res.status(200).json({ message: 'Login bem-sucedido' });
+            req.session.user = email;
+            const userType = 'comum';
+            res.status(200).json({ message: 'Login bem-sucedido', userType: 'comum' });
         } else {
             res.status(401).json({ message: 'Credenciais inválidas' });
         }
@@ -113,10 +105,39 @@ app.post('/login', (req, res) => {
 });
 
 
-app.post('/signup', (req, res) => {
-    const { username, password, email} = req.body;
+app.get('/loginpjuridica', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'loginpjuridica.html'));
+});
 
-    connection.query('SELECT * FROM usuarios WHERE nome = ?', [username], (error, results) => {
+
+app.post('/loginpjuridica', (req, res) => {
+    console.log('Recebendo requisição de login de pessoa jurídica:', req.body);
+    const { cnpj, senha } = req.body;
+
+    connection.query('SELECT * FROM empresas WHERE cnpj = ? AND senha = ?', [cnpj, senha], (error, results) => {
+        if (error) {
+            console.error('Erro ao verificar as credenciais:', error);
+            res.status(500).json({ message: 'Erro interno do servidor' });
+            return;
+        }
+
+        if (results.length === 1) {
+            req.session.user = cnpj;
+            req.session.isEmpresa = true;
+            console.log(`Login bem-sucedido como empresa: ${cnpj}`);
+            res.status(200).json({ message: 'Login bem-sucedido', userType: 'empresa'});
+        } else {
+            console.log('Credenciais inválidas para login de pessoa jurídica:', req.body);
+            res.status(401).json({ message: 'Credenciais inválidas' });
+        }
+    });
+});
+
+
+app.post('/signup', (req, res) => {
+    const { email, senha, cep, telefone} = req.body;
+
+    connection.query('SELECT * FROM usuarios WHERE email = ?', [email], (error, results) => {
         if (error) {
             console.error('Erro ao verificar nome de usuário:', error);
             res.status(500).json({ message: 'Erro interno do servidor' });
@@ -124,44 +145,58 @@ app.post('/signup', (req, res) => {
         }
 
         if (results.length > 0) {
-            res.status(400).json({ message: 'Nome de usuário já em uso' });
+            res.status(400).json({ message: 'email de usuário já em uso' });
             return;
         }
 
-        connection.query('INSERT INTO usuarios (nome, senha, email) VALUES (?, ?, ?)', [username, password, email], (error, results) => {
+        connection.query('INSERT INTO usuarios (email, senha, cep, telefone) VALUES (?, ?, ?, ?)', [email, senha, cep, telefone], (error, results) => {
             if (error) {
                 console.error('Erro ao criar conta:', error);
                 res.status(500).json({ message: 'Erro interno do servidor' });
                 return;
             }
-            console.log(`Conta criada: ${username}`);
+            console.log(`Conta criada: ${email}`);
             res.status(200).json({ message: 'Conta criada com sucesso' });
         });
     });
 });
 
 
-app.get('/contaInfo', requireAuth, (req, res) => {
-    const username = req.session.user;
+app.post('/signuppjuridica', (req, res) => {
+    const { email, cnpj, telefone, senha} = req.body;
 
-    connection.query('SELECT * FROM usuarios WHERE nome = ?', [username], (error, results) => {
+    connection.query('SELECT * FROM usuarios WHERE email = ?', [email], (error, results) => {
         if (error) {
-            console.error('Erro ao obter informações da conta:', error);
+            console.error('Erro ao verificar nome de usuário:', error);
             res.status(500).json({ message: 'Erro interno do servidor' });
             return;
         }
 
-        if (results.length === 1) {
-            const userInfo = {
-                username: results[0].nome,
-                email: results[0].email,
-                isAdmin: Boolean(results[0].isAdmin)
-            };
-            res.status(200).json(userInfo);
-        } else {
-            res.status(404).json({ message: 'Informações da conta não encontradas' });
+        if (results.length > 0) {
+            res.status(400).json({ message: 'email de usuário já em uso' });
+            return;
         }
+
+        connection.query('INSERT INTO empresas (email, cnpj, telefone, senha) VALUES (?, ?, ?, ?)', [email, cnpj, telefone, senha], (error, results) => {
+            if (error) {
+                console.error('Erro ao criar conta:', error);
+                res.status(500).json({ message: 'Erro interno do servidor' });
+                return;
+            }
+            console.log(`Conta criada: ${email}`);
+            res.status(200).json({ message: 'Conta criada com sucesso' });
+        });
     });
+});
+
+
+app.get('/checkLogin', requireAuth, (req, res) => {
+    if (req.session.user) {
+        let userType = req.session.userType || 'comum';
+        res.status(200).json({ loggedIn: true, userType: userType });
+    } else {
+        res.status(401).json({ loggedIn: false });
+    }
 });
 
 
@@ -200,16 +235,16 @@ app.get('/publicacoes', (req, res) => {
 
 
 app.post('/publicacoes', (req, res) => {
-    const { nome_empresa, tipo, localizacao, descricao, preco } = req.body;
+    const { nome_publi, tipo, localizacao, descricao, preco, link } = req.body;
 
-    if (!nome_empresa || !tipo || !localizacao || !descricao || !preco) {
+    if (!nome_publi || !tipo || !localizacao || !descricao || !preco) {
         res.status(400).json({ message: 'Todos os campos são obrigatórios' });
         return;
     }
 
     connection.query(
-        'INSERT INTO publicacoes (nome_empresa, tipo, localizacao, descricao, preco) VALUES (?, ?, ?, ?, ?)',
-        [nome_empresa, tipo, localizacao, descricao, preco],
+        'INSERT INTO publicacoes (nome_publi, tipo, localizacao, descricao, preco, link) VALUES (?, ?, ?, ?, ?, ?)',
+        [nome_publi, tipo, localizacao, descricao, preco, link],
         (error, results) => {
             if (error) {
                 console.error('Erro ao criar uma nova publicação:', error);
@@ -233,6 +268,7 @@ app.get('/logout', (req, res) => {
         res.redirect('/');
     });
 });
+
 
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
